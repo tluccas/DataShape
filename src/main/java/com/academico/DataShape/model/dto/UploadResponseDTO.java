@@ -1,4 +1,4 @@
 package com.academico.DataShape.model.dto;
 
-public record UploadResponseDTO (String message, int totalLinhas) { 
+public record UploadResponseDTO (int obrasCount, int vendasCount) { 
 }
