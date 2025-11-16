@@ -28,6 +28,7 @@ public class DataService {
     @Autowired
     private ObraRepository obraRepository;
 
+    @SuppressWarnings("deprecation")
     public List<Obra> parseObras(MultipartFile fileCSV) {
         List<Obra> obras = new ArrayList<>();
 
@@ -61,50 +62,49 @@ public class DataService {
         return obras;
     }
 
-public List<Venda> parseVendas(MultipartFile fileCSV) {
-    List<Venda> vendas = new ArrayList<>();
+    @SuppressWarnings("deprecation")
+    public List<Venda> parseVendas(MultipartFile fileCSV) {
+        List<Venda> vendas = new ArrayList<>();
 
-    try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(fileCSV.getInputStream(), StandardCharsets.ISO_8859_1))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(fileCSV.getInputStream(), StandardCharsets.ISO_8859_1))) {
 
-        Iterable<CSVRecord> registros = CSVFormat.DEFAULT
-                .withDelimiter(';')
-                .withFirstRecordAsHeader()
-                .withIgnoreSurroundingSpaces()
-                .withTrim(true)
-                .parse(reader);
+            Iterable<CSVRecord> registros = CSVFormat.DEFAULT
+                    .withDelimiter(';')
+                    .withFirstRecordAsHeader()
+                    .withIgnoreSurroundingSpaces()
+                    .withTrim(true)
+                    .parse(reader);
 
-        for (CSVRecord r : registros) {
+            for (CSVRecord r : registros) {
 
-            // Se alguma coluna essencial está vazia, pula
-            if (r.get("Obra Vendida").isBlank()) {
-                continue;
+                // Se alguma coluna essencial está vazia, pula
+                if (r.get("Obra Vendida").isBlank()) {
+                    continue;
+                }
+
+                Venda venda = new Venda();
+
+                venda.setDataVenda(parseData(r.get("Data")));
+                venda.setMesVenda(r.get("Mês"));
+                venda.setQuantidadeVenda(Integer.parseInt(r.get("Quantidade")));
+
+                venda.setObra(findVariasByTitulo(r.get("Obra Vendida")));
+
+                venda.setValorPago(parseValor(r.get("Valor Pago")));
+
+                venda.setMetodoPagamento(
+                        MetodoPagamento.fromCsv(r.get("Forma de Pagamento")));
+
+                vendas.add(venda);
             }
 
-            Venda venda = new Venda();
-
-            venda.setDataVenda(parseData(r.get("Data")));
-            venda.setMesVenda(r.get("Mês"));
-            venda.setQuantidadeVenda(Integer.parseInt(r.get("Quantidade")));
-
-            venda.setObra(findVariasByTitulo(r.get("Obra Vendida")));
-
-            venda.setValorPago(parseValor(r.get("Valor Pago")));
-
-            venda.setMetodoPagamento(
-                MetodoPagamento.fromCsv(r.get("Forma de Pagamento"))
-            );
-
-            vendas.add(venda);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        return vendas;
     }
-
-    return vendas;
-}
-
 
     private LocalDate parseData(String dataStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
