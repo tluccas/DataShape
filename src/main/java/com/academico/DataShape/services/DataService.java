@@ -3,10 +3,13 @@ package com.academico.DataShape.services;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -31,6 +34,7 @@ public class DataService {
     @SuppressWarnings("deprecation")
     public List<Obra> parseObras(MultipartFile fileCSV) {
         List<Obra> obras = new ArrayList<>();
+        Set<String> titulosNormalizados = new HashSet<>();
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(fileCSV.getInputStream(), StandardCharsets.ISO_8859_1))) {
@@ -49,21 +53,16 @@ public class DataService {
                     continue;
                 }
 
-                 boolean obraExiste = false;
-                for (Obra obra : obras){
-                    if (r.get("Obra Vendida").equals(obra.getTituloObra())){
-                        obraExiste = true;
-                        break;
-                    }
-                }
+                String n = normalizar(titulo);
 
-                if (obraExiste){
+          
+                if (!titulosNormalizados.add(n)) { //Verifica se a obra ja existe com comparação normalizada
                     continue;
                 }
 
                 Obra obra = new Obra();
                 obra.setTituloObra(titulo);
-
+                obra.setTituloNormalizado(n);
                 obras.add(obra);
             }
 
@@ -101,7 +100,7 @@ public class DataService {
                 venda.setMesVenda(r.get("Mês"));
                 venda.setQuantidadeVenda(Integer.parseInt(r.get("Quantidade")));
 
-                venda.setObra(findVariasByTitulo(r.get("Obra Vendida")));
+                venda.setObra(findObraByTitulo(r.get("Obra Vendida")));
 
                 venda.setValorPago(parseValor(r.get("Valor Pago")));
 
@@ -123,22 +122,12 @@ public class DataService {
         return LocalDate.parse(dataStr, formatter);
     }
 
-    /*
-     * Quando fizermos o ajuste de titulo unico
-     * private Obra findObraByTitulo(String titulo) {
-     * return obraRepository.findByTituloObra(titulo)
-     * .orElseThrow(() -> new RuntimeException("Obra não encontrada: " + titulo));
-     * }
-     */
-
-    private Obra findVariasByTitulo(String titulo) {
-        List<Obra> obras = obraRepository.findAllByTituloObra(titulo);
-        if (obras.isEmpty()) {
-            throw new RuntimeException("Obra não encontrada: " + titulo);
-        }
-
-        return obras.get(0); // primeira obra encontrada
-    }
+    
+      private Obra findObraByTitulo(String titulo) {
+        String n = normalizar(titulo);
+        return obraRepository.findByTituloNormalizado(n)
+            .orElseThrow(() -> new RuntimeException("Obra não encontrada: " + titulo));
+      }
 
     // Normalizar valor vendido
     private Double parseValor(String valorStr) {
@@ -152,5 +141,13 @@ public class DataService {
                 .trim();
         return Double.parseDouble(numero);
     }
+
+    private String normalizar(String s) {
+    return Normalizer.normalize(s, Normalizer.Form.NFD)
+            .replaceAll("[^\\p{ASCII}]", "")  
+            .replaceAll("\\s+", " ")            
+            .trim()
+            .toUpperCase();
+}
 
 }
