@@ -18,6 +18,9 @@ public class Obra {
     @Column(nullable = false, name = "titulo_obra", unique = true)
     private String tituloObra;
 
+    @Column(nullable = false, unique = true)
+    private String tituloNormalizado;
+
     public Long getId() {
         return id;
     }
@@ -30,6 +33,13 @@ public class Obra {
     }
     public void setTituloObra(String tituloObra) {
         this.tituloObra = tituloObra;
+    }
+
+    public String getTituloNormalizado() {
+        return tituloNormalizado;
+    }
+    public void setTituloNormalizado(String tituloNormalizado) {
+        this.tituloNormalizado = tituloNormalizado;
     }
 
 
