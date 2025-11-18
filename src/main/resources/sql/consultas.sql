@@ -28,3 +28,12 @@ ORDER BY FIELD(Mes,
         'MAIO', 'JUNHO', 'JULHO', 'AGOSTO',
         'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO')
 , lucro_mes DESC;
+
+-- Quantidade total de vendas por Obra
+SELECT o.titulo_obra AS Obra,
+SUM(v.quantidade_venda) AS Quantidade
+FROM vendas_tb v
+JOIN obras_tb o 
+WHERE o.id = v.obra_id
+GROUP BY Obra
+ORDER BY Quantidade DESC;
