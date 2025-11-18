@@ -15,7 +15,7 @@ public class Obra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "titulo_obra")
+    @Column(nullable = false, name = "titulo_obra", unique = true)
     private String tituloObra;
 
     public Long getId() {

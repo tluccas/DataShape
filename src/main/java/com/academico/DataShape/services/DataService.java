@@ -49,6 +49,18 @@ public class DataService {
                     continue;
                 }
 
+                 boolean obraExiste = false;
+                for (Obra obra : obras){
+                    if (r.get("Obra Vendida").equals(obra.getTituloObra())){
+                        obraExiste = true;
+                        break;
+                    }
+                }
+
+                if (obraExiste){
+                    continue;
+                }
+
                 Obra obra = new Obra();
                 obra.setTituloObra(titulo);
 
