@@ -97,12 +97,27 @@ public class DataService {
                 Venda venda = new Venda();
 
                 venda.setDataVenda(parseData(r.get("Data")));
-                venda.setMesVenda(r.get("Mês"));
-                venda.setQuantidadeVenda(Integer.parseInt(r.get("Quantidade")));
+                try {
+                    venda.setQuantidadeVenda(Integer.parseInt(r.get("Quantidade")));
+                } catch (NumberFormatException e) {
+                    System.err.println("Aviso: quantidade inválida encontrada para a obra: " + r.get("Obra Vendida") + ". Definindo para 0.");
+                    venda.setQuantidadeVenda(0);
+                }
 
-                venda.setObra(findObraByTitulo(r.get("Obra Vendida")));
+                try {
+                    venda.setObra(findObraByTitulo(r.get("Obra Vendida")));
+                } catch (RuntimeException e) {
 
-                venda.setValorPago(parseValor(r.get("Valor Pago")));
+                    System.err.println("ERRO CRÍTICO: Obra não encontrada no BD durante o parse de vendas: " + r.get("Obra Vendida"));
+                    continue;
+                }
+
+                try{
+                    venda.setValorPago(parseValor(r.get("Valor Pago")));
+                }catch (NumberFormatException e) {
+                    System.err.println("Aviso: valor inválido encontrado para a obra: " + r.get("Obra Vendida") + ". Definindo para 0.0");
+                    venda.setValorPago(0.0);
+                }
 
                 venda.setMetodoPagamento(
                         MetodoPagamento.fromCsv(r.get("Forma de Pagamento")));

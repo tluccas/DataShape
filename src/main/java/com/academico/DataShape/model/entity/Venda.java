@@ -21,8 +21,6 @@ public class Venda {
 
     private LocalDate dataVenda;
 
-    private String mesVenda;
-
     private Integer quantidadeVenda;
 
     @ManyToOne
@@ -47,14 +45,6 @@ public class Venda {
 
     public void setDataVenda(LocalDate dataVenda) {
         this.dataVenda = dataVenda;
-    }
-
-    public String getMesVenda() {
-        return mesVenda;
-    }
-
-    public void setMesVenda(String mesVenda) {
-        this.mesVenda = mesVenda;
     }
 
     public Integer getQuantidadeVenda() {
