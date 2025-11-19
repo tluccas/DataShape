@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.academico.DataShape.model.dto.responses.findAllVendasDTO;
+import com.academico.DataShape.model.dto.responses.findTotalVendasResponse;
 import com.academico.DataShape.model.entity.Venda;
 
 public interface VendaRepository extends JpaRepository<Venda, Long> {
@@ -17,5 +18,17 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
         JOIN v.obra o
                 """)
     List<findAllVendasDTO> findAllVendas();
+
+    @Query ("""
+            SELECT new com.academico.DataShape.model.dto.responses.findTotalVendasResponse(
+                o.tituloObra,
+                SUM(v.valorPago)
+                )
+            FROM Venda v
+            JOIN v.obra o
+            GROUP BY o.tituloObra
+            ORDER BY SUM(v.valorPago) DESC
+            """)
+    List<findTotalVendasResponse> findTotalVendas();
     
 }
