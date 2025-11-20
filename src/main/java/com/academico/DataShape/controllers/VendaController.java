@@ -3,7 +3,6 @@ package com.academico.DataShape.controllers;
 import java.util.List;
 
 import com.academico.DataShape.model.dto.responses.VendasMensaisDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
