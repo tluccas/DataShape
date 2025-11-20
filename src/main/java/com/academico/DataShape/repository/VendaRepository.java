@@ -2,6 +2,7 @@ package com.academico.DataShape.repository;
 
 import java.util.List;
 
+import com.academico.DataShape.model.dto.responses.QtdVendaDTO;
 import com.academico.DataShape.model.dto.responses.VendasMensaisDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,5 +46,17 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
             ORDER BY FUNCTION('MONTH', v.dataVenda) ASC, SUM(v.valorPago) DESC
             """)
     List<VendasMensaisDTO> findVendasPorMes();
+
+    @Query("""
+            SELECT new com.academico.DataShape.model.dto.responses.QtdVendaDTO(
+                o.tituloObra,
+                SUM(v.quantidadeVenda)
+                )
+                FROM Venda v
+                JOIN v.obra o
+                GROUP BY o.tituloObra
+                ORDER BY SUM(v.quantidadeVenda) DESC
+            """)
+    List<QtdVendaDTO> findQtdVendasPorObra();
 }
 
