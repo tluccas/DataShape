@@ -35,15 +35,21 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
 
     @Query("""
             SELECT new com.academico.DataShape.model.dto.responses.VendasMensaisDTO(
-                CAST(FUNCTION('YEAR', v.dataVenda) AS integer),
-                CAST(FUNCTION('MONTHNAME', v.dataVenda) AS string),
+                YEAR(v.dataVenda),
+                MONTHNAME(v.dataVenda),
                 o.tituloObra,
                 SUM(v.valorPago)
             )
             FROM Venda v
             JOIN v.obra o
-            GROUP BY FUNCTION('YEAR', v.dataVenda), FUNCTION('MONTHNAME', v.dataVenda), o.tituloObra
-            ORDER BY FUNCTION('MONTH', v.dataVenda) ASC, SUM(v.valorPago) DESC
+            GROUP BY 
+            YEAR(v.dataVenda), 
+            MONTH(v.dataVenda),
+            MONTHNAME(v.dataVenda), 
+            o.tituloObra
+            ORDER BY YEAR(v.dataVenda),
+            MONTH(v.dataVenda) ASC,
+            SUM(v.valorPago) DESC
             """)
     List<VendasMensaisDTO> findVendasPorMes();
 
