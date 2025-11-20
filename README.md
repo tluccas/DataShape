@@ -1,5 +1,9 @@
 # DataShape
 
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
+
 ## Descrição do Projeto
 
 DataShape é uma aplicação Java Spring Boot desenvolvida para processar e analisar dados abertos do governo federal. O projeto implementa um sistema de ETL (Extract, Transform, Load) que normaliza dados de vendas de livros, tratando inconsistências e organizando informações em um banco de dados relacional estruturado.
