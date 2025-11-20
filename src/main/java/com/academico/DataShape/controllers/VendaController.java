@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.academico.DataShape.model.dto.responses.findAllVendasResponse;
+import com.academico.DataShape.model.dto.responses.findQtdTotalVendasResponse;
 import com.academico.DataShape.model.dto.responses.findTotalVendasResponse;
 import com.academico.DataShape.repository.VendaRepository;
 import com.academico.DataShape.services.QueryService;
@@ -18,11 +19,14 @@ import com.academico.DataShape.services.QueryService;
 @RequestMapping("/vendas")
 public class VendaController {
 
-    @Autowired
     private VendaRepository vendaRepository;
 
-    @Autowired
     private QueryService queryService;
+
+    public VendaController(VendaRepository vendaRepository, QueryService queryService) {
+        this.vendaRepository = vendaRepository;
+        this.queryService = queryService;
+    }
     
     @GetMapping("all-vendas")
     public ResponseEntity<findAllVendasResponse> getMethodName() {
