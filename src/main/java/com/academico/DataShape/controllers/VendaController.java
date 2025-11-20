@@ -42,4 +42,9 @@ public class VendaController {
     public ResponseEntity<List<VendasMensaisDTO>> getVendasPorMes() {
         return ResponseEntity.ok(vendaRepository.findVendasPorMes());
     }
+
+    @GetMapping("/qtd-total-vendas")
+    public ResponseEntity<findQtdTotalVendasResponse> getQtdTotalVendas() {
+        return ResponseEntity.ok(queryService.getQtdTotalVendasResponse());
+    }
 }
