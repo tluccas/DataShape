@@ -2,8 +2,9 @@
 
 ## Base de Dados Utilizada
 - **Fonte**: [dados.gov.br](https://dados.gov.br)
-- **Dataset**: [ESPECIFICAR QUAL DATASET FOI USADO]
-- **URL**: [COLOCAR LINK DO DATASET]
+- **Dataset**: Dados Abertos CPE - Distribuição e vendas Loja do livro 2024
+- **URL**: https://dados.gov.br/dados/conjuntos-dados/dados-abertos-cpe-distribuicao-e-vendas-loja-do-livro
+- **Arquivo**: Dados_Abertos_CPE_Distribuição_e_vendas_Loja_do_livro_2024.csv
 
 ## Estrutura Original do CSV
 Colunas identificadas no arquivo original:
