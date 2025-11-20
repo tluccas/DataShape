@@ -20,15 +20,17 @@ import com.academico.DataShape.services.DataService;
 @RequestMapping("/data")
 public class DataController {
     
-    @Autowired
     private DataService dataService;
 
-    @Autowired
     private ObraRepository obraRepository;
 
-    @Autowired
     private VendaRepository vendaRepository;
 
+    public DataController(DataService dataService, ObraRepository obraRepository, VendaRepository vendaRepository) {
+        this.dataService = dataService;
+        this.obraRepository = obraRepository;
+        this.vendaRepository = vendaRepository;
+    }
 
 
     @PostMapping("upload")
