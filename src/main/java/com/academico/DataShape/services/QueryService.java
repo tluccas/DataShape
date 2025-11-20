@@ -28,8 +28,8 @@ public class QueryService {
     public findQtdTotalVendasResponse getQtdTotalVendasResponse(){
 
         List<QtdVendaDTO> qtdVendasPorObra = vendaRepository.findQtdVendasPorObra();
-        Integer totalUnidadesVendidas = qtdVendasPorObra.stream()
-                .mapToInt(QtdVendaDTO::vendido)
+        Long totalUnidadesVendidas = qtdVendasPorObra.stream()
+                .mapToLong(QtdVendaDTO::vendido)
                 .sum();
             
         return new findQtdTotalVendasResponse(totalUnidadesVendidas, qtdVendasPorObra);
