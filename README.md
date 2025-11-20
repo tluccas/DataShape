@@ -78,9 +78,9 @@ Parameter: csvFile (arquivo CSV)
 
 #### Consultar Vendas
 ```bash
-GET http://localhost:8080/vendas/all
-GET http://localhost:8080/vendas/total
-GET http://localhost:8080/vendas/mensais
+GET http://localhost:8080/vendas/all-vendas
+GET http://localhost:8080/vendas/total-vendas
+GET http://localhost:8080/vendas/vendas-por-mes
 ```
 
 ## Estrutura do Projeto
